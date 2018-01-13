@@ -13,8 +13,14 @@ preserveTaxonomyNames = true
 
 enableRobotsTXT = true # generate robots.txt
 
-# Syntax Highlighting ( https://gohugo.io/content-management/syntax-highlighting/ )
-pygmentsCodefences = true
+pygmentsCodeFences = true
+
+pygmentsOptions = ""
+pygmentsUseClasses = false
+pygmentsUseClassic = false
+
+# See https://help.farbox.com/pygments.html
+pygmentsStyle = "monokai"
 
 # Missing translations will default to this content language
 defaultContentLanguage = "en"
@@ -25,8 +31,8 @@ title404 = "Nothing's here!"
 
 [params.assets]
 favicon = "favicon.ico"
-customCSS = ["css/custom.css"]
-customJS = ["js/custom.js"]
+customCSS = []
+customJS = []
 gopher = "" # used in 404 template ( Generator: https://gopherize.me )
 
 [params.copyright]
