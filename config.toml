@@ -25,6 +25,10 @@ pygmentsStyle = "monokai"
 # Missing translations will default to this content language
 defaultContentLanguage = "en"
 
+[outputs]
+home = ["HTML", "AMP", "RSS"]
+page = ["HTML"]
+
 [params.info]
 description = "A blog about random programing things"
 title404 = "Nothing's here!"
@@ -33,7 +37,7 @@ title404 = "Nothing's here!"
 favicon = "favicon.ico"
 customCSS = []
 customJS = []
-gopher = "" # used in 404 template ( Generator: https://gopherize.me )
+gopher = "abc224b54c60ec9c4d84482e6fa2dcc25bbc17f4" # used in 404 template ( Generator: https://gopherize.me )
 
 [params.copyright]
 prefix = ""
