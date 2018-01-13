@@ -1,10 +1,6 @@
 ---
 date: "2018-01-13T14:17:59Z"
 title: "Welcome to my new site"
-categories:
-  -
-tags:
-  -
 draft: false
 ---
 
