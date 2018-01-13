@@ -20,7 +20,7 @@ pygmentsCodefences = true
 defaultContentLanguage = "en"
 
 [params.info]
-description = "A blog about radom programing things"
+description = "A blog about random programing things"
 title404 = "Nothing's here!"
 
 [params.assets]
