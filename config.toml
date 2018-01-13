@@ -80,7 +80,7 @@ page = "/:slug/"
 
 [[menu.main]]
 name = "My company"
-weight = -10
+weight = -110
 identifier = "company"
 url = "https://fluidmedia.wales"
 
