@@ -9,7 +9,7 @@ metadata:
   name: server
   namespace: misell-cymru
 spec:
-  replicas: 1
+  replicas: 3
   template:
     metadata:
       labels:
