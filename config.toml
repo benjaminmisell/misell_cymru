@@ -90,6 +90,12 @@ weight = -110
 identifier = "company"
 url = "https://fluidmedia.wales"
 
+[[menu.main]]
+name = "Tags"
+weight = -120
+identifier = "tags"
+url = "/tags"
+
 [blackfriday]
 hrefTargetBlank = true
 
