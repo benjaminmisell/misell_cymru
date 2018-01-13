@@ -37,3 +37,27 @@ spec:
   - port: 80
     protocol: TCP
     targetPort: 80
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: server
+  namespace: misell-cymru
+  labels:
+    app: server
+  annotations:
+    kubernetes.io/tls-acme: "true"
+spec:
+  tls:
+  - hosts:
+    - "misell.cymru"
+    - "www.misell.cymru"
+    secretName: server-tls
+  rules:
+  - host: "*.misell.cymru"
+    http:
+      paths:
+      - path: "/"
+        backend:
+          serviceName: server
+          servicePort: 80
