@@ -146,6 +146,71 @@ conv_val |= ADCH << 8;
 
 And tada! We have out value! That wasn't hard or complicated now was it.
 
+### Custom millis function
+
+Before we can ream audio levels theres onu thing left to do. Due to not having the Arduino libraries we need to write our own function that gives us how many milliseconds since startup. This is done by using the first 8-bit counter and set it up to overflow every 0.265ms.
+
+```c
+TODO: Add code
+```
+
+We then set it to trigger an interupt on the overflow.
+
+```c
+TODO: Add code
+```
+
+And in the interupt handler we increment a variable for microseconds by 256 and for every time it goes over a thousand we increment the milliseconds.
+
+```c
+TODO: Add code
+```
+
+Finally we can write a function that allows safe access to the millis variable by disabling interupts and then re-enamling them after reading the value.
+
 ### Reading audio level
 
 As audio changes over time and can be silent for a short time we have to sample the maximum values over a window. The lowest audible frequency is around 20Hz so if we sample for 0.05 seconds or more we should get everything.
+
+We start by defining a couple variables for the read. A start millis to calcuate from, a maxium smallest value a minimum largest value.
+
+```c
+TODO: Add code
+```
+
+We then enter an loop constantly reading values and checking if they are larger than our previous maxium or smalle than our previous minimum, until we have been reading for 50 milliseconds.
+
+```c
+TODO: Add code
+```
+
+Finally we can modify that code to read in both variables at tte sawe time.
+
+```c
+TODO: Add code
+```
+
+### Switching logic
+
+This bit looks simple at first but actually requires some thought. If you just switched to whichever had a higher signal level, then two signals at the same time wolud result in constant switching.
+
+My solution is to store which input is already on and the previous state of each input. The state is simply a boolean that stores weather the signal is above a certain threshold. My switching logic is then as follows:
+
+| Input A cur | Input B cur | Input A prev | Input B prev | Cur output | Output |
+|:-----------:|:-----------:|:------------:|:------------:|:----------:|:------:|
+| OFF         | OFF         | ANY          | ANY          | A          | A      |
+| OFF         | OFF         | ANY          | ANY          | B          | B      |
+| ON          | OFF         | ANY          | ANY          | ANY        | A      |
+| OFF         | ON          | ANY          | ANY          | ANY        | B      |
+| ON          | ON          | OFF          | OFF          | A          | A      |
+| ON          | ON          | OFF          | OFF          | B          | B      |
+| ON          | ON          | ON           | OFF          | ANY        | B      |
+| ON          | ON          | OFF          | ON           | ANY        | A      |
+| ON          | ON          | ON           | ON           | A          | A      |
+| ON          | ON          | ON           | ON           | B          | B      |
+
+All of that in code format looks like this:
+
+```c
+TODO: Add code
+```
