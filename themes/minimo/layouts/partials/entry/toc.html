@@ -1,0 +1,10 @@
+{{ if eq .Params.toc true }}
+<div class="entry-toc">
+  <div class='toc-title'>
+    <span>
+      {{- i18n "tableOfContents" -}}
+    </span>
+  </div>
+  {{ .TableOfContents }}
+</div>
+{{ end }}
