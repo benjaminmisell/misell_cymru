@@ -263,3 +263,260 @@ func loadImageConfig(name string) (baseImage, error) {
 }
 ```
 
+## Step 3: Handle http connections
+
+Go once again has first class support for http and http servers built in. So first we must import `net/http` and a router. Im using mux here: `github.com/gorilla/mux`
+
+```go
+import (
+	"log"
+	"net/http"
+	"github.com/gorilla/mux"
+	"os"
+)
+```
+
+The next thing to do is setup the router and http server. This can be done in just 3 lines! This will be the entrypoint to our program.
+
+```go
+func main() {
+  // Create router
+	router := mux.NewRouter().StrictSlash(true)
+  // Only accept POST requests
+	router.Methods("POST").Path("/").HandlerFunc(handleImage)
+  // Start the server and if it exits log the error
+	log.Fatal(http.ListenAndServe(":8080", router))
+}
+```
+
+That was suprisingly easy wasnt it. But what about that handleImage function. That brings us to the next part which is processing the request.
+
+## Step 4: Process incoming requests
+
+The first step is to create a function that gets called by the router whenever the specified path is requested. This takes a `ResponseWriter` to write back to the client and a `Request` with info on the request made.
+
+```go
+func handleImage(w http.ResponseWriter, r *http.Request) {
+
+}
+```
+
+First we must process the incoming form data. This can be done in one line:
+
+```go
+r.ParseMultipartForm(32 << 20)
+```
+
+This specifies a maxium file size of 32MiB and parses the other fields as well. We then want to access said file.
+
+```go
+file, _, err := r.FormFile("uploadfile")
+if err != nil {
+  fmt.Println(err)
+  w.WriteHeader(http.StatusBadRequest)
+  return
+}
+defer file.Close()
+```
+
+This opens the file just as if it was opened from disk. If there was an error (example: the field doesn't exist) then we send back a 400 Bad Request error and exit the function. The `defer file.Close()` makes sure the file is closed at the end of the function even if we error.
+
+We now need to know what base to use. We can get the form field to do so. If the field was not specified we get a blank string so we return a 400 error again.
+
+```go
+baseName := r.FormValue("base")
+if baseName == "" {
+  w.WriteHeader(http.StatusBadRequest)
+  return
+}
+```
+
+We finaly have everything needed to process the image. So we call our previously defined `loadImageConfig` function to get everyting ready for processing. If the config can't be found we return a 404 error otherwise something unknown went wrong and we return a 500 error.
+
+```go
+base, err := loadImageConfig(baseName)
+if err != nil {
+  if _, ok := err.(*os.PathError); ok {
+    w.WriteHeader(http.StatusNotFound)
+    return
+  } else {
+    w.WriteHeader(http.StatusInternalServerError)
+    return
+  }
+}
+```
+
+The last thing to do is process the image and return it. I'll get on to how we process the image next but first I'll finish this function and return the processed image. We pass the base, the overlay image and the writer so that the function can write back the image. If there was an error we return a 500 error.
+
+```go
+err = processImage(base, file, w)
+if err != nil {
+  w.WriteHeader(http.StatusInternalServerError)
+}
+```
+
+All of this together makes this:
+
+```go
+import (
+	"log"
+	"net/http"
+	"github.com/gorilla/mux"
+	"os"
+)
+
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
+}
+
+func handleImage(w http.ResponseWriter, r *http.Request) {
+	r.ParseMultipartForm(32 << 20)
+	file, _, err := r.FormFile("uploadfile")
+	if err != nil {
+		fmt.Println(err)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	defer file.Close()
+
+	baseName := r.FormValue("base")
+	if baseName == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	base, err := loadImageConfig(baseName)
+	if err != nil {
+		if _, ok := err.(*os.PathError); ok {
+			w.WriteHeader(http.StatusNotFound)
+			return
+		} else {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+	}
+
+	err = processImage(base, file, w)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+	}
+}
+
+func main() {
+	router := mux.NewRouter().StrictSlash(true)
+	router.Methods("POST").Path("/").HandlerFunc(handleImage)
+	log.Fatal(http.ListenAndServe(":8080", router))
+}
+```
+
+## Step 5: Processing the image
+
+So that function we called in previous step `processImage` needs writing. Let's do that! Go has first class support for image editing with `image/draw` (Go seems to have first class support for nearly everything right?). So let's import eveything we'll need. I'm using `github.com/disintegration/imaging` for some helper functions. I'm importing `image/png` without `_` because I'll use it to export the final image.
+
+```go
+import (
+	"image"
+	"image/draw"
+	"image/png"
+	_ "image/jpeg"
+	"github.com/disintegration/imaging"
+	"io"
+)
+```
+
+So let's start with a blank function that takes the base, overlay and output writer in: 
+
+```go
+func processImage(base baseImage, source io.Reader, out io.Writer) error {
+
+}
+```
+
+First we need to setup some things for later. Let's get the size of the final image a create a blank image to draw everything over.
+
+```go
+size := base.backImage.Bounds()
+finalImage := image.NewNRGBA(size)
+```
+
+Then we'll try to decode the image from the client. If it fails we exit and return the error.
+
+```go
+sourceImage, _, err := image.Decode(source)
+if err != nil {
+  return err
+}
+```
+
+We then calculate the width and hight of the area we can draw on and fit the source image withing that rectangle. I use a image.Pt to store width and height here not X,Y values but it works.
+
+```go
+boundsSize := image.Pt(base.bottomRightBound.X-base.topLeftBound.X,
+		base.bottomRightBound.Y-base.topLeftBound.Y)
+
+sourceImage = imaging.Fit(sourceImage, boundsSize.X, boundsSize.Y, imaging.Lanczos)
+sourceImageSize := sourceImage.Bounds()
+```
+
+This bit is somewhat complicated. We need to calculate where to palce the overlay. I won't explain bacause I don't even know what I wrote but it works. We also then calulate bounds for the placement from the position and the size.
+
+```go
+pos := image.Pt((base.topLeftBound.X+boundsSize.X/2)-(sourceImageSize.Max.X/2),
+		(base.topLeftBound.Y+boundsSize.Y/2)-(sourceImageSize.Max.Y/2))
+bounds := image.Rect(pos.X, pos.Y, pos.X+boundsSize.X, pos.Y+boundsSize.Y)
+```
+
+Finally we draw all the images in the correct order, write it out to the client and return `nil` error.
+
+```go
+draw.Draw(finalImage, finalImage.Bounds(), base.backImage, image.Pt(0, 0), draw.Over)
+draw.Draw(finalImage, bounds, sourceImage, image.Pt(0, 0), draw.Over)
+draw.Draw(finalImage, finalImage.Bounds(), base.frontImage, image.Pt(0, 0), draw.Over)
+
+png.Encode(out, finalImage)
+return nil
+```
+
+All of that together looks like this:
+
+```go
+import (
+	"image"
+	"image/draw"
+	"image/png"
+	_ "image/jpeg"
+	"github.com/disintegration/imaging"
+	"io"
+)
+
+func processImage(base baseImage, source io.Reader, out io.Writer) error {
+
+	size := base.backImage.Bounds()
+
+	finalImage := image.NewNRGBA(size)
+
+	sourceImage, _, err := image.Decode(source)
+	if err != nil {
+		return err
+	}
+
+	boundsSize := image.Pt(base.bottomRightBound.X-base.topLeftBound.X,
+		base.bottomRightBound.Y-base.topLeftBound.Y)
+
+	sourceImage = imaging.Fit(sourceImage, boundsSize.X, boundsSize.Y, imaging.Lanczos)
+	sourceImageSize := sourceImage.Bounds()
+
+	pos := image.Pt((base.topLeftBound.X+boundsSize.X/2)-(sourceImageSize.Max.X/2),
+		(base.topLeftBound.Y+boundsSize.Y/2)-(sourceImageSize.Max.Y/2))
+	bounds := image.Rect(pos.X, pos.Y, pos.X+boundsSize.X, pos.Y+boundsSize.Y)
+
+	draw.Draw(finalImage, finalImage.Bounds(), base.backImage, image.Pt(0, 0), draw.Over)
+	draw.Draw(finalImage, bounds, sourceImage, image.Pt(0, 0), draw.Over)
+	draw.Draw(finalImage, finalImage.Bounds(), base.frontImage, image.Pt(0, 0), draw.Over)
+
+	png.Encode(out, finalImage)
+	return nil
+}
+```
