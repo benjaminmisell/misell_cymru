@@ -1,5 +1,5 @@
 ---
-date: "2018-01-14T10:43:31Z"
+date: "2018-01-16T06:41:00Z"
 title: "A micro-service visualizer for a print shop in golang"
 authors: []
 tags:
