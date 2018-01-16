@@ -5,11 +5,13 @@ authors: []
 tags:
   - go
   - micro-services
-draft: true
+draft: false
 toc: true
 typora-copy-images-to: ../../static/imgs
 typora-root-url: ../../static
 ---
+
+## Background
 
 First things first some background; This is a project for a client of mine at [Fluid Meida](https://fluidmedia.wales), the print shop wanted a new website and one of the main additions was a page where people could view what their prints would look like. Somewhat like what you get on teespring etc. 
 
@@ -520,3 +522,35 @@ func processImage(base baseImage, source io.Reader, out io.Writer) error {
 	return nil
 }
 ```
+
+## All together now
+
+I decided to split this into 3 files. Go is really nice in that any files in the same package (`main` in this case) cant just see each other without imports. The 3 files are:
+
+- main.go - Entry-point and HTTP server
+- load.go - Functions for loading images and config
+- process.go - Function that actually does the rendering
+
+Now thats all good but how do we deploy this. The answer as always is Docker! Because this is a go file and we don't want a 500MB image with all possible standard libraries we'll have to statically link the executable. This is done by setting the `CGO_ENABLED` variable to 0. So our compile command would be (in the project root).
+
+```bash
+CGO_ENABLED=0 go build
+```
+
+This will take a while as it has to compile all the libraries we used. When it's done we should have one `printshop` file that can run anywhere. So now we need a docker container to run it all in. Our `Dockerfile` shall be:
+
+```dockerfile
+FROM scratch
+
+COPY printshop /
+COPY config/ /config
+COPY imgs/ /imgs
+
+CMD ["/printshop"]
+```
+
+The `FROM scratch` starts us off with absolutely nothing in our container. We don't need any libraries so this is perfect and makes the smallest of images. We also need to copy in our config and images for the server but these could be mounted on a persistent form of storage to allow easier updates, or updates from another control container.
+
+## That's all
+
+I'm not going to cover deployment here but if you want a template to use for Kubernetes you can use the one in my previous post [A useful starting deployment for Kubernetes](https://misell.cymru/posts/starter-kubes-deploy/). The full source is on github [here](https://github.com/FluidMediaProductions/printshop). This is under the GPLv3 license. Normally I'd release things under the MIT license but this is for work and we use use a different license there.
