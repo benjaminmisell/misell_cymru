@@ -1,5 +1,5 @@
 ---
-date: "2018-01-16T15:41:15Z"
+date: "2018-01-17"
 title: "Airbnb calendar integration with golang"
 authors: []
 tags:
