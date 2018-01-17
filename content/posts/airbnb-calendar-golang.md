@@ -890,4 +890,4 @@ CMD ["/airbnb_canelndar"]
 
 The `FROM scratch` starts us off with a blank container. We don’t need any libraries so this is perfect and makes the smallest of images. This can now be deployed to kubernetes etc, but that is beyond the scope of this post. You can use my [starter deployment template](https://misell.cymru/posts/starter-kubes-deploy/) for kubernetes if you want a starting point. 
 
-Thanks for your time in reading this and I hope you learn't something!
+The complete code is [here](https://github.com/FluidMediaProductions/airbnb_calendar) on Github. All code here and on Github is under the GPLv3. Normally I license my code under the MIT license but as this is company work it's under the GPL. Thanks for your time in reading this and I hope you learn't something!
