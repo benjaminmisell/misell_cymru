@@ -1,12 +1,12 @@
 ---
-date: "2018-01-17T15:37:48Z"
-title: "Transfering the company site to hugo"
+date: "2018-02-03T11:34:00Z"
+title: "Transfering the company site to hugo: Part 1"
 authors: []
 tags:
   - go
   - hugo
   - html
-draft: true
+draft: false
 toc: true
 typora-root-url: ../../static
 typora-copy-images-to: ../../static/imgs
@@ -339,8 +339,6 @@ git commit -S -m "Add static files"
 git push
 ```
 
-
-
 ### Page top
 
 We shall put all bits of the index page in `layout/partials/index`. The first one is the simplest, a video and header.
@@ -447,10 +445,10 @@ And our display code becomes
 </div>
 ```
 
-But we also need to start a new row every 4 blocks so we need to modify our range again to have an index.
+We also need to start a new row every 4 blocks so we need to modify our range again to have an index.
 
 ```html
-{{ range $index, $element := where .Site.Pages "Section" "specialities" }}
+{{ range $index, $element := where (where .Site.Pages "Section" "specialities") "IsPage" true }}
   <div class="col-md-3 service even">
     <i class="fa {{ $element.Params.icon }}"></i>
     <h3>{{ $element.Title }}</h3>
@@ -472,3 +470,130 @@ git commit -S -m "Add specialties"
 git push
 ```
 
+### Our work
+
+So with a very similar template to the previous section we can add this section. Notice we don't need to break every 4 here.
+
+```html
+<section id="work" class="page-section dark-wrapper no-bottom">
+    <div class="wrapper">
+        <div class="page-header text-center">
+            <h1>Our Work<small>Its Not Bad</small></h1>
+        </div>
+    </div>
+    <div id="loader">
+        <div class="item"></div>
+    </div>
+    <div id="container">
+        {{ range $index, $element := where (where .Site.Pages "Section" "work") "IsPage" true }}
+            <div class="item small">
+                <div class="item-inner">
+                    <a href="{{ $element.URL }}">
+                        <img src="" alt="Portfolio Item" />
+                        <div class="project-title">
+                            <div class="title-wrapper">
+                                <h3>{{ $element.Title }}</h3>
+                                <span></span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        {{ end }}
+    </div>
+</section>
+```
+
+Now the new bits. Each item can have tags associated with it and you can filter by tags, so first lets add the tags to the item markdown.
+
+```markdown
+---
+title: "PPD Gallery"
+tags:
+ - Photography
+ - Development
+---
+Full page
+```
+
+We can now access these tags in the template. So this goes in the `span` element containing the tags. The if in the middle is to put a comma unless its the last item.
+
+```html
+{{ range $tagIndex, $tag := $element.Params.tags }}
+  {{ $tag }}{{ if not (eq $tagIndex (sub (len $element.Params.tags) 1))}},{{ end }}
+{{ end }}
+```
+
+We can also change add this to the class definition on each item to allow filtering. We set it to lower and replace spaces with `-` to make it nice for a class.
+
+```html
+{{ range $tagIndex, $tag := $element.Params.tags }}{{ lower (replace $tag " " "-" )}} {{ end }}
+```
+
+The last bit is somewhat more complicated because we have to get all the tags used to make the filtering buttons. Hugo has this thing called `Scratch` which is for temporary data while rendering. First  well start off the `tags` slice by adding it to the scratch with the "All" tag defined.
+
+```html
+{{ $.Scratch.Add "tags" (slice "All") }}
+```
+
+Next we iterate over each item
+
+```html
+{{ range $element := where (where .Site.Pages "Section" "work") "IsPage" true }}
+{{ end }}
+```
+
+Then inside there we get each tag.
+
+```html
+{{ range $tag := $element.Params.tags }}
+
+{{ end }}
+```
+
+And finally if it is not already in the slice we append it.
+
+```html
+{{ if not (in ($.Scratch.Get "tags") $tag)}}
+	{{ $.Scratch.Add "tags" (slice $tag) }}
+{{ end }}
+```
+
+All of that together looks like this.
+
+```html
+{{ $.Scratch.Add "tags" (slice "All") }}
+{{ range $element := where (where .Site.Pages "Section" "work") "IsPage" true }}
+    {{ range $tag := $element.Params.tags }}
+		{{ if not (in ($.Scratch.Get "tags") $tag)}}
+            {{ $.Scratch.Add "tags" (slice $tag) }}
+        {{ end }}
+    {{ end }}
+{{ end }}
+```
+
+Then with this calculated slice we can add the filter list to the template
+
+```html
+<ul id="filters">
+  {{ range $tag := $.Scratch.Get "tags" }}
+    <li>
+      {{ if (eq $tag "All") }}
+      	<a href=".item" class="btn active">All</a>
+      {{ else }}
+      	<a href=".{{ lower (replace $tag " " "-" )}}" class="btn">{{ $tag }}</a>
+      {{ end }}
+    </li>
+  {{ end }}
+</ul>
+```
+
+And thats it. Let's commit
+
+```bash
+git add .
+git commit -S -m "Add clients"
+git push
+```
+
+I'm going to leave out the rest of the sections on the homepage as they're all really the same and come back to this in a part 2 discussing anything else that came up and what I did for pages other then the home.
