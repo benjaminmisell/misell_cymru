@@ -54,6 +54,13 @@ spec:
     - "www.misell.cymru"
     secretName: server-tls
   rules:
+  - host: "misell.cymru"
+    http:
+      paths:
+      - path: "/"
+        backend:
+          serviceName: server
+          servicePort: 80
   - host: "*.misell.cymru"
     http:
       paths:
