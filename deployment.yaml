@@ -14,6 +14,11 @@ spec:
     metadata:
       labels:
         app: server
+        kube-monkey/enabled: enabled
+        kube-monkey/identifier: misell-cymru
+        kube-monkey/mtbf: '2'
+        kube-monkey/kill-mode: "fixed"
+        kube-monkey/kill-value: 1
     spec:
       containers:
       - name: nginx
