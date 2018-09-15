@@ -1,0 +1,35 @@
+---
+- name: Create folder
+  file:
+    path: /opt/apps/misell_cymru
+    state: directory
+  run_once: true  
+    
+- name: Copy files
+  synchronize:
+    src: public
+    dest: /opt/apps/misell_cymru
+  run_once: true
+
+- name: Copy certificate
+  copy:
+    src: ssl/cert.pem
+    dest: /opt/apps/misell_cymru
+  run_once: true
+
+- name: Copy key
+  copy:
+    src: ssl/key.pem
+    dest: /opt/apps/misell_cymru
+  run_once: true
+  
+- name: Create nginx config
+  copy:
+    src: files/nginx
+    dest: /etc/nginx/sites-enabled/misell_cymru
+
+- name: Reload nginx
+  service:
+    name: nginx
+    state: reloaded
+    
