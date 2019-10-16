@@ -1,0 +1,30 @@
+---
+- name: Create folder
+  file:
+    path: /opt/apps/misell_cymru
+    state: directory
+  run_once: true  
+    
+- name: Copy files
+  synchronize:
+    src: public
+    dest: /opt/apps/misell_cymru
+  run_once: true
+  
+- name: Create nginx config
+  copy:
+    src: files/nginx
+    dest: /etc/nginx/sites-enabled/chf_website
+
+#- name: Issue certificates
+#  shell: "certbot -m {{ letsencrypt_email }} --agree-tos --nginx -d chf.co.uk -d www.chf.co.uk -n certonly"
+#  args:
+#    creates: /etc/letsencrypt/live/chf.uk.com
+    
+- name: Reload nginx
+  service:
+    name: nginx
+    state: reloaded
+    
+- name: Reload vassal
+  command: "touch --no-dereference /etc/uwsgi/vassals/chf_website.ini"

@@ -41,7 +41,7 @@ gopher = "https://storage.googleapis.com/gopherizeme.appspot.com/gophers/abc224b
 
 [params.copyright]
 prefix = ""
-holder = "Benjamin Misell"
+holder = "Q Misell"
 startYear = "2018"
 suffix = ""
 
@@ -62,7 +62,7 @@ appID = ""
 pageID = ""
 
 [params.opengraph.twitter]
-page = "legopicode" # Twitter page username
+page = "TheEnbyperor" # Twitter page username
 
 [params.seo]
 # Title Separator: - – — · • * ⋆ | ~ « » < >
@@ -70,12 +70,12 @@ titleSeparator = "•"
 
 [params.social]
 codepen = ""
-email = "benjamin@misell.cymru"
+email = "q@misell.cymru"
 facebook = ""
-github = "BenjaminMisell"
+github = "TheEnbyperor"
 instagram = ""
 linkedin = ""
-twitter = "legopicode"
+twitter = "TheEnbyperor"
 telegram = ""
 
 [params.social.config]
@@ -89,16 +89,16 @@ tag = "tags"
 page = "/:slug/"
 
 [[menu.main]]
-name = "My company"
-weight = -110
-identifier = "company"
-url = "https://fluidmedia.wales"
-
-[[menu.main]]
 name = "Tags"
 weight = -120
 identifier = "tags"
 url = "/tags"
+
+#[[menu.main]]
+#name = "PyCon 2018 Slides"
+#weight = -130
+#identifier = "pycon-2018-slides"
+#url = "/pyconuk-2018-slides"
 
 [blackfriday]
 hrefTargetBlank = true
