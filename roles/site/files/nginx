@@ -1,15 +1,29 @@
 server {
     listen 80;
-    server_name misell.cymru www.misell.cymru;
+    server_name misell.cymru www.misell.cymru magicalcodewit.ch www.magicalcodewit.ch;
 
     location / {
-        rewrite ^ https://misell.cymru$request_uri? permanent;
+        rewrite ^ https://magicalcodewit.ch$request_uri? permanent;
     }
 }
 
 server {
     listen 443;
     server_name misell.cymru www.misell.cymru;
+    charset utf-8;
+
+    ssl on;
+    ssl_certificate         /opt/apps/misell_cymru/cert.pem;
+    ssl_certificate_key     /opt/apps/misell_cymru/key.pem;
+    
+    location / {
+        rewrite ^ https://magicalcodewit.ch$request_uri? permanent;
+    }
+}
+
+server {
+    listen 443;
+    server_name magicalcodewit.ch www.magicalcodewit.ch;
     charset utf-8;
 
     ssl on;

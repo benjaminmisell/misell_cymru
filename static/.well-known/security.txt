@@ -1,0 +1,5 @@
+Contact: mailto:q@magicalcodewit.ch
+Encryption: https://magialcodewit.ch/pub.key
+Preferred-Languages: en
+Canonical: https://magicalcodewit.ch/.well-known/security.txt
+

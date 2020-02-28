@@ -1,0 +1,27 @@
+<section id='talks' class='home-section'>
+  <header>
+    <h2 class='home-section-title title'>
+      Talks
+    </h2>
+  </header>
+
+  <div class='list-container'>
+    <ul class='list'>
+    {{ range ( first .Site.Params.settings.recentPostsLength ( where .Data.Pages "Section" "talks" ) ) }}
+      <li class="list-item">
+        <article>
+          <div class='meta'>
+            <span>{{- .Date.Format "Jan 02 2006 3:04 PM" -}}</span>
+          </div>
+
+          <header class='list-item-header'>
+            <h3 class='list-item-title'>
+              {{- .Title -}}
+            </h3>
+          </header>
+        </article>
+      </li>
+    {{ end }}
+    </ul>
+  </div>
+</section>

@@ -6,7 +6,7 @@ tags:
   - go
   - hugo
   - html
-draft: false
+draft: true
 toc: true
 typora-root-url: ../../static
 typora-copy-images-to: ../../static/imgs

@@ -1,5 +1,5 @@
-baseURL = "https://misell.cymru"
-title = "Q Misell"
+baseURL = "https://magicalcodewit.ch"
+title = "Q 🦄"
 # for smart copyright line, leave this blank and check [params.copyright]
 copyright = ""
 
@@ -41,8 +41,8 @@ gopher = "https://storage.googleapis.com/gopherizeme.appspot.com/gophers/abc224b
 
 [params.copyright]
 prefix = ""
-holder = "Q Misell"
-startYear = "2018"
+holder = "Q"
+startYear = "2017"
 suffix = ""
 
 [params.settings]
@@ -54,7 +54,7 @@ recentPostsLength = 4
 hideSocialMenu = false
 showReadingTime = true
 noTermCloudShuffle = false
-homepageSections = ["recent_posts"]
+homepageSections = ["talks", "recent_posts"]
 
 [params.opengraph.facebook]
 admins = [] # array of Facebook IDs
@@ -70,7 +70,7 @@ titleSeparator = "•"
 
 [params.social]
 codepen = ""
-email = "q@misell.cymru"
+email = "q@magicalcodewit.ch"
 facebook = ""
 github = "TheEnbyperor"
 instagram = ""
@@ -93,6 +93,12 @@ name = "Tags"
 weight = -120
 identifier = "tags"
 url = "/tags"
+
+[[menu.main]]
+name = "About me"
+weight = -130
+identifier = "about"
+url = "/about"
 
 #[[menu.main]]
 #name = "PyCon 2018 Slides"
