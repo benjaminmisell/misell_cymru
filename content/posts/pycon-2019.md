@@ -13,7 +13,7 @@ more time socialising with delegates, as I can always catch up on talks later on
 
 ## Day -1
 
-The conference started on Thursday for me as I arrived at ~1pm on that day to help setup. PyCon of course doesn't have infinate money and thus rely on volunteers to help make the conference 
+The conference started on Thursday for me as I arrived at ~1pm on that day to help setup. PyCon of course doesn't have infinite money and thus rely on volunteers to help make the conference 
 possible. I enjoyed the conference so much in previous years and felt I should help make it as good a conference as possible for new and returning delegates. City Hall where as always happy 
 to see us and provided the great service and venue we've come to expect for PyCon. Some of the more frequent delegates where present on Thursday and it was great to meet up with them for a 
 chat before everyone else arrived for the conference on Friday. As usual there was lots to do to get the venue ready for the conference and not everything went to plan, so a lot of duct 
@@ -26,8 +26,8 @@ where the most badges to sort through. Every year the printers promise all the b
 meet the delegates I'd be interacting with during the conference. Doing this meant I missed the keynote and the first slot of talks, but they wheren't massively of interest to me so it 
 didn't matter. After that was the break, and as always every year everyone but the Welsh rush in to get the welshcakes (apparently there very difficult to come by outside of Wales).
 
-The first talk I attended was on the L* search algorythm by David R. Maciver (a regular at PyCon and one of the members of my Star Trek role play group). It is a way to map othwise 
-identical looking rooms/states by traversing paths (experiments) and seeing where you end up (observations). As David himself pointed out the full algorythm is usless to most if not all 
+The first talk I attended was on the L* search algorithm by David R. Maciver (a regular at PyCon and one of the members of my Star Trek role play group). It is a way to map otherwise 
+identical looking rooms/states by traversing paths (experiments) and seeing where you end up (observations). As David himself pointed out the full algorythm is useless to most if not all 
 real world applications but variations on it and simplifications can be used to solve other problems. 
 
 Next was a talk by Alex Chan (also a regular at PyCon and this year one of the organisers) on Sans I/O programming. Alex showed us a simple paradigm to help us simplify our programs and 
@@ -52,11 +52,11 @@ And that was it, the first day of PyCon over. I was already exhausted and there 
 ## Day 1
 
 On Saturday morning I again volunteered to operate the camera in the Assembly room for talks. Since the speakers didn't move around too much from the lecturn it gave me the opportunity to 
-concentrate on what was being said and not miss too much of the content of the talks. The keynote on Saturday was on Python in Affrica and how PyCons in Affrica are run and lead. I'm 
+concentrate on what was being said and not miss too much of the content of the talks. The keynote on Saturday was on Python in Africa and how PyCons in Affrica are run and lead. I'm 
 reminded every year at PyCon that I should really try to get to an Affrican PyCon and this keynote only emphasised this.
 
 After the break Joel Collins who I'd met at the social event the previous evening gave a talk on robot microscopy and how his team created a cheap microscope with 3d printing, raspberry pis 
-and flexible structures as oposed to expensive precision machined bearings. They're currently working on using it in less developed countries to help detect malaria easier and more cheaply. 
+and flexible structures as opposed to expensive precision machined bearings. They're currently working on using it in less developed countries to help detect malaria easier and more cheaply. 
 
 Next I was planning to go to a talk on extracting data from PDFs but unfortunately the speaker was nowhere to be seen so instead we got a impromptu talk from Alex Chan on the curb cut 
 effect. The curb cut effect is how a adaptation for disabled or disadvantaged people (such a curb cuts/dipped kerbs) can end up making an improvment for everyone else.
@@ -68,7 +68,7 @@ not going to the conference dinner.
 ## Day 2
 
 On Sunday everyone was pretty exhausted from the night before and I didn't go to any talks before about 3pm. That talk was by Yeray Díaz Díaz on how dependency injection is a good thing to 
-use in python even if it's seen as overengineering most of the time. This talked linked nicely to the Sans I/O talk by Alex Chan as both focused on decoupling diffrent parts of code and how 
+use in python even if it's seen as overengineering most of the time. This talked linked nicely to the Sans I/O talk by Alex Chan as both focused on decoupling different parts of code and how 
 it makes our lives easier. 
 
 At the end of the day was the lightning talks as usual, and the code dojo. A code dojo is where people split up into small groups with a single sentence task and try to program a solution 
@@ -81,7 +81,7 @@ wasn't remotely impressive compared to what other teams managed in the same time
 By Monday many people had to leave, or had just spent too much time out the previous evening so everything was a bit slow to get going, but the conference went on; there was a need for even 
 more exchanging of knowlege! The keynote on this morning was possibly the best keynote I've ever had the pleasure of viewing live (from the front row too - advantages of getting there 
 early). Tobias introduced us to some events in history where humans in their messy nature had to support multiple systems (such as calendars) or had to change from one to the other 
-simultaniously (like the side of the road to drive on, which was changed in Sweden as recently as the late 20th century). He showed us some ways humans have dealt with these successfuly, 
+simultaneously (like the side of the road to drive on, which was changed in Sweden as recently as the late 20th century). He showed us some ways humans have dealt with these successfuly, 
 and not so successfuly (for those concerned Sweden changed rather successfuly). 
 
 The next talk I attended was on writing secure python code. This was one of the talks I live tweeted instead of taking notes on so I'll put the thread here instead. Live tweeting as a form 

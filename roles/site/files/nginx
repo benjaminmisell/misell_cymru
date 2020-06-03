@@ -1,5 +1,6 @@
 server {
     listen 80;
+    listen [::]:80;
     server_name misell.cymru www.misell.cymru magicalcodewit.ch www.magicalcodewit.ch;
 
     location / {
@@ -9,6 +10,7 @@ server {
 
 server {
     listen 443;
+    listen [::]:443;
     server_name misell.cymru www.misell.cymru;
     charset utf-8;
 
@@ -23,6 +25,7 @@ server {
 
 server {
     listen 443;
+    listen [::]:443;
     server_name magicalcodewit.ch www.magicalcodewit.ch;
     charset utf-8;
 

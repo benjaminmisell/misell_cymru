@@ -14,14 +14,14 @@ Now you may think that Github is just a file/hosting site sharing site and while
 
 |    **Standard**     |      **Github**       |
 | :-----------------: | :-------------------: |
-|        Likes        |        Starts         |
+|        Likes        |        Stars          |
 |       Follows       |  Follows (obviously)  |
 |       Repost        |         Fork          |
 | Discussions/Threads |        Issues         |
 |    Private posts    | Private repositories  |
 |   Home/Time-line    | Discover repositories |
 
- ## Stars
+## Stars
 
 This one is easy. A like on social media shows your appreciation of a post and a star on a repository on Github shows you like it or you think it's work worth continuing. 
 

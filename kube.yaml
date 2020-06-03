@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: personal-site
+  labels:
+    app: personal-site
+    part: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: personal-site
+      part: nginx
+  template:
+    metadata:
+      labels:
+        app: personal-site
+        part: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: theenbyperor/site:1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: personal-site
+  labels:
+    app: personal-site
+    part: nginx
+spec:
+  selector:
+    app: personal-site
+    part: nginx
+  ports:
+    - port: 80
+      targetPort: 80
+      name: nginx
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: personal-site-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  tls:
+    - hosts:
+        - magicalcodewit.ch
+#        - www.magicalcodewit.ch
+        - misell.cymru
+#        - www.misell.cymru
+      secretName: personal-site-tls
+  rules:
+  - host: magicalcodewit.ch
+    http: &http
+      paths:
+      - path: /
+        backend:
+          serviceName: personal-site
+          servicePort: 80
+  - host: www.magicalcodewit.ch
+    http: *http
+  - host: misell.cymru
+    http: *http
+  - host: www.misell.cymru
+    http: *http
